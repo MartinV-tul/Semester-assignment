@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div align="center" class="container m-0">
+
+    <h1 th:text="${text}"></h1>
+    <table border="2" class = "table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>Town name</th>
+            <th>Town id</th>
+            <th>Main</th>
+            <th>Description</th>
+            <th>Pressure(hPa)</th>
+            <th>Humidity(%)</th>
+            <th>Wind speed(m/s)</th>
+            <th>Temperature(°C)</th>
+            <th>One day average temperature(°C)</th>
+            <th>One week average temperature(°C)</th>
+            <th>Two weeks average temperature(°C)</th>
+            <th>Download measurements</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="town : ${towns}">
+            <td th:text="${town.getName()}"></td>
+            <td th:text="${town.getId()}"></td>
+            <td th:text="${town.getMain()}"></td>
+            <td th:text="${town.getDescription()}"></td>
+            <td th:text="${town.getPressure()}"></td>
+            <td th:text="${town.getHumidity()}"></td>
+            <td th:text="${town.getWindSpeed()}"></td>
+            <td th:text="${town.getActualTemperature()}"></td>
+            <td th:text="${town.getOneDayAverageTemperature()}"></td>
+            <td th:text="${town.getOneWeekAverageTemperature()}"></td>
+            <td th:text="${town.getTwoWeeksAverageTemperature()}"></td>
+            <td style="text-align: center" ><a th:href="@{/downloadMeasurementsOfTown(townId=${town.id},name=${town.name})}"  class="btn btn-primary">Download</a> </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

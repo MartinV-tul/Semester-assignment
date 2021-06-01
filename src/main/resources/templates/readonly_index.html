@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div align="center" class="container m-0">
+
+    <h1>Countries</h1>
+    <a th:href="@{/downloadAllMeasurements}" class="btn btn-primary btn-sm mb-2">Download all measurements</a>
+    <table border="2" class = "table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>Country name</th>
+            <th>Country code</th>
+            <th>Show towns</th>
+            <th>Download measurements</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="country : ${countries}">
+            <td th:text="${country.getCountryName()}"></td>
+            <td th:text="${country.getCode()}"></td>
+            <td style="text-align: center" ><a th:href="@{/showTownsOfCountry(code = ${country.code},name=${country.countryName})}"  class="btn btn-primary">Show</a> </td>
+            <td style="text-align: center" ><a th:href="@{/downloadMeasurementsOfCountry(code = ${country.code})}"  class="btn btn-primary">Download</a> </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
