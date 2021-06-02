@@ -51,11 +51,11 @@ public class AppController {
     @GetMapping("/setUpdateTime")
     public String setUpdateTime(@RequestParam Integer time){
         if(readonly) return "Update is not enabled in readonly mode";
-        if(time >=5000){
-            UpdateThread.updateTime = time;
+        if(time >= 5000){
+            UpdateThread.setUpdateTime(time);
             return "Update time successfully set to: " + time+"ms.";
         }
-        UpdateThread.updateTime = 5000;
+        UpdateThread.setUpdateTime(time);
         return  "Update time lower than 5000ms is not allowed. Update time set to 5000ms.";
     }
 

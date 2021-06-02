@@ -2,6 +2,7 @@ package cz.tul.service;
 
 import cz.tul.data.Measurement;
 import cz.tul.repositories.MeasurementRepository;
+import lombok.Synchronized;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,12 +43,16 @@ public class MeasurementService {
         return  measurementRepository.findFirstByTownIdOrderByTsDesc(townId);
     }
 
-    public void createExpirationIndexIfNotExists(){
+    public void createExpirationIndexIfNotExists(int expirationTime){
+        if(expirationTime<60) {
+            logger.warn("Expiration time lower then 1 minute is not allowed. Expiration time set to 60s.");
+            expirationTime=60;
+        }
         List<IndexInfo> s = mongoTemplate.indexOps(Measurement.class).getIndexInfo();
         for (IndexInfo info:s) {
-            if(info.getName().equals("createdAt_1")) return;
+            if(info.getName().equals("createdAt_1")) changeExpirationTime(expirationTime);
         }
-        createExpirationIndex(1209600);
+        createExpirationIndex(expirationTime);
     }
 
     public void changeExpirationTime(int newTimeOfExpiration){

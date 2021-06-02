@@ -54,11 +54,23 @@ public class Main {
         SpringApplication app = new SpringApplication(Main.class);
         ApplicationContext context = app.run(args);
         MeasurementService measurementService = context.getBean(MeasurementService.class);
-        measurementService.createExpirationIndexIfNotExists();
         boolean readonly = Boolean.parseBoolean(context.getEnvironment().getProperty("readonly"));
+        try {
+            int expirationTime = Integer.parseInt(context.getEnvironment().getProperty("expiration"));
+            measurementService.createExpirationIndexIfNotExists(expirationTime);
+        }
+        catch (Exception e){
+            measurementService.createExpirationIndexIfNotExists(1209600);
+        }
         if(!readonly){
             logger.info("Starting update thread.");
             UpdateThread updateThread = new UpdateThread(context.getBean(TownService.class),context.getBean(MeasurementService.class));
+            try {
+                int updateTime = Integer.parseInt(context.getEnvironment().getProperty("update"));
+                UpdateThread.setUpdateTime(updateTime);
+            }
+            catch (Exception e){
+            }
             updateThread.start();
         }
     }
